@@ -1,0 +1,67 @@
+[
+  {
+    "id": "gta6-spoilers",
+    "name": {
+      "en": "GTA 6 spoilers",
+      "hu": "GTA 6 spoilerek"
+    },
+    "iconText": "VI",
+    "color": "teal",
+    "keywords": [
+      "GTA 6",
+      "GTA VI",
+      "Grand Theft Auto 6",
+      "Grand Theft Auto VI",
+      "Rockstar Games",
+      "Lucia",
+      "Jason",
+      "Caminos",
+      "Duval",
+      "Leonida",
+      "Port Gellhorn",
+      "Ambrosia",
+      "Grassrivers",
+      "Mount Kalaga",
+      "Cal Hampton",
+      "Boobie Ike",
+      "Dre'Quan Priest",
+      "Real Dimez",
+      "Raul Bautista",
+      "Brian Heder"
+    ],
+    "spoilerWords": [
+      "prologue",
+      "intro",
+      "opening",
+      "ending",
+      "end",
+      "final mission",
+      "cutscene",
+      "death",
+      "dies",
+      "baby",
+      "mom",
+      "leak",
+      "spoiler"
+    ],
+    "topicWords": [
+      "GTA",
+      "Rockstar",
+      "Vice City",
+      "Liberty City"
+    ],
+    "sites": [
+      "reddit.com/r/GTA6",
+      "reddit.com/r/GTAVI",
+      "reddit.com/r/GTA",
+      "reddit.com/r/rockstar",
+      "reddit.com/r/GamingLeaksAndRumours",
+      "gtaforums.com",
+      "gta.fandom.com",
+      "gtabase.com",
+      "rockstarintel.com",
+      "rockstargames.com/VI",
+      "x.com/search?q=gta"
+    ]
+  }
+]

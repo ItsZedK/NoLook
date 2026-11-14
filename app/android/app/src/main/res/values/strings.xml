@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="blocker_label">NoLook blocker</string>
+    <string name="blocker_summary">Closes blocked apps, blocks sites and hides spoilers</string>
+    <string name="blocker_description">NoLook reads what is on screen to close apps you blocked, block sites in your browser and cover posts that mention your keywords, but nothing leaves your phone.</string>
+</resources>

@@ -1,0 +1,14 @@
+name: nolook_host
+description: The small helper browsers start so the NoLook extension can get blocks from the app.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  nolook_core:
+    path: ../core
+
+dev_dependencies:
+  test: ^1.25.0

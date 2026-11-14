@@ -1,0 +1,12 @@
+name: nolook_core
+description: Blocks, locks, matching and the .nolook file format shared by every part of NoLook.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+
+dev_dependencies:
+  test: ^1.25.0
+dependencies:
+  crypto: ^3.0.8

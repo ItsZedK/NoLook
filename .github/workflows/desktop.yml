@@ -1,0 +1,165 @@
+# mac/linux/windows builds. runs on v* tags or by hand, files go to the run's artifacts
+name: Desktop builds
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+env:
+  FLUTTER_VERSION: '3.47.9'
+
+jobs:
+  extension:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Build the extensions
+        working-directory: extension
+        run: |
+          npm ci
+          node build.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: extension-dist
+          path: extension/dist
+
+  macos:
+    needs: extension
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+      - uses: actions/download-artifact@v4
+        with:
+          name: extension-dist
+          path: extension/dist
+      - name: Build the app
+        working-directory: app
+        run: flutter build macos --release
+      - name: Build the browser helper
+        working-directory: host
+        run: |
+          dart pub get
+          mkdir -p build
+          dart compile exe bin/nolook_host.dart -o build/nolook_host
+      - name: Put the helper and extensions in the app, make the disk image
+        run: |
+          app="app/build/macos/Build/Products/Release/NoLook.app"
+          cp host/build/nolook_host "$app/Contents/MacOS/"
+          mkdir -p "$app/Contents/MacOS/extension"
+          cp -R extension/dist/chrome extension/dist/firefox "$app/Contents/MacOS/extension/"
+          # no apple id yet, ad hoc sign so it runs on apple silicon
+          codesign --force --deep --sign - "$app"
+          # dmg with an Applications shortcut
+          mkdir dmg
+          cp -R "$app" dmg/
+          ln -s /Applications dmg/Applications
+          hdiutil create -volname NoLook -srcfolder dmg -ov -format UDZO NoLook-macos.dmg
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NoLook-macos
+          path: NoLook-macos.dmg
+
+  linux:
+    needs: extension
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install what Flutter needs on Linux
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev libstdc++-12-dev libayatana-appindicator3-dev libnotify-dev
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+      - uses: actions/download-artifact@v4
+        with:
+          name: extension-dist
+          path: extension/dist
+      - name: Build the app
+        working-directory: app
+        run: flutter build linux --release
+      - name: Build the browser helper
+        working-directory: host
+        run: |
+          dart pub get
+          mkdir -p build
+          dart compile exe bin/nolook_host.dart -o build/nolook_host
+      - name: Put the helper and extensions next to the app, pack it
+        run: |
+          bundle="app/build/linux/x64/release/bundle"
+          cp host/build/nolook_host "$bundle/"
+          mkdir -p "$bundle/extension"
+          cp -R extension/dist/chrome extension/dist/firefox "$bundle/extension/"
+          # bundle the tray lib, not every distro has it
+          for so in libayatana-appindicator3.so.1 libayatana-indicator3.so.7 libayatana-ido3-0.4.so.0 libdbusmenu-glib.so.4 libdbusmenu-gtk3.so.4; do
+            cp -L "/usr/lib/x86_64-linux-gnu/$so" "$bundle/lib/" || true
+          done
+          mv "$bundle" NoLook
+          tar -czf NoLook-linux.tar.gz NoLook
+      - name: Make the AppImage
+        run: |
+          mkdir -p NoLook.AppDir
+          cp -R NoLook/. NoLook.AppDir/
+          cp app/assets/logo/icon-512.png NoLook.AppDir/nolook.png
+          printf '%s\n' '[Desktop Entry]' 'Type=Application' 'Name=NoLook' 'Comment=Hide spoilers and block sites and apps' 'Exec=nolook' 'Icon=nolook' 'Categories=Utility;' 'Terminal=false' > NoLook.AppDir/nolook.desktop
+          printf '%s\n' '#!/bin/sh' 'exec "$(dirname "$0")/nolook" "$@"' > NoLook.AppDir/AppRun
+          chmod +x NoLook.AppDir/AppRun NoLook.AppDir/nolook NoLook.AppDir/nolook_host
+          wget -q https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage -O appimagetool
+          chmod +x appimagetool
+          ARCH=x86_64 APPIMAGE_EXTRACT_AND_RUN=1 ./appimagetool NoLook.AppDir NoLook-linux.AppImage
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NoLook-linux
+          path: |
+            NoLook-linux.AppImage
+            NoLook-linux.tar.gz
+
+  windows:
+    needs: extension
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+      - uses: actions/download-artifact@v4
+        with:
+          name: extension-dist
+          path: extension/dist
+      - name: Build the app
+        working-directory: app
+        run: flutter build windows --release
+      - name: Build the browser helper
+        working-directory: host
+        run: |
+          dart pub get
+          mkdir -p build
+          dart compile exe bin/nolook_host.dart -o build/nolook_host.exe
+      - name: Put the helper and extensions next to the app, zip it and make the installer
+        run: |
+          out="app/build/windows/x64/runner/Release"
+          cp host/build/nolook_host.exe "$out/"
+          mkdir -p "$out/extension"
+          cp -r extension/dist/chrome extension/dist/firefox "$out/extension/"
+          (cd "$out" && 7z a -tzip "$GITHUB_WORKSPACE/NoLook-windows.zip" . >/dev/null)
+          bash tools/build_installer.sh
+          cp build/installer/NoLook-setup.exe .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NoLook-windows
+          path: |
+            NoLook-windows.zip
+            NoLook-setup.exe

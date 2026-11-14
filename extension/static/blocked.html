@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blocked by NoLook</title>
+<link rel="icon" href="icons/32.png">
+<link rel="stylesheet" href="page.css">
+<style>
+  body { min-height: 100vh; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+  body::before, body::after { content: ""; position: absolute; z-index: 0; }
+  body::before { width: 520px; height: 520px; left: -160px; bottom: -200px; border-radius: 42% 58% 60% 40% / 45% 45% 55% 55%; background: var(--tertiary-container); opacity: .7; }
+  body::after { width: 380px; height: 380px; right: -120px; top: -120px; border-radius: 58% 42% 40% 60% / 55% 45% 55% 45%; background: var(--primary-container); opacity: .8; }
+  header { position: relative; z-index: 1; padding: 24px 32px; }
+  .center { position: relative; z-index: 1; flex: 1; display: grid; place-items: center; padding: 24px; }
+  .box { max-width: 520px; text-align: center; display: flex; flex-direction: column; align-items: center; }
+  .tile { width: 96px; height: 96px; border-radius: 30px; display: grid; place-items: center; font-family: Syne; font-weight: 800; font-size: 28px; margin-bottom: 28px; }
+  .tile .ms { width: 44px; height: 44px; }
+  h1 { font-size: clamp(30px, 4vw, 44px); line-height: 1.05; margin: 0 0 14px; font-weight: 700; overflow-wrap: anywhere; }
+  h1 .site { color: var(--primary); }
+  .why { display: inline-flex; align-items: center; gap: 8px; font-size: 16px; color: var(--on-surface-variant); background: var(--surface-low); padding: 10px 16px; border-radius: 999px; margin-bottom: 32px; }
+  .why .ms { color: var(--primary); }
+  .btns { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  .foot { position: relative; z-index: 1; text-align: center; padding: 20px; font-size: 13px; color: var(--on-surface-variant); }
+  @media (max-width: 760px) {
+    header { padding: 18px 20px; }
+    .btns { width: 100%; flex-direction: column; }
+    .btns .btn { width: 100%; }
+    .why { border-radius: 16px; }
+  }
+</style>
+</head>
+<body>
+<div id="app" style="display:contents"></div>
+<script src="blocked.js"></script>
+</body>
+</html>

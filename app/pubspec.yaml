@@ -1,0 +1,44 @@
+name: nolook
+description: "Blocks sites, apps and keywords"
+publish_to: 'none'
+
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.13.7
+
+dependencies:
+  flutter:
+    sdk: flutter
+  nolook_core:
+    path: ../core
+  flutter_svg: ^2.3.2
+  material_symbols_icons: ^4.2960.0
+  window_manager: 0.5.1
+  tray_manager: 0.5.2
+  path_provider: ^2.1.6
+  file_selector: ^1.1.0
+  ffi: ^2.2.0
+  local_notifier: ^0.1.6
+  dotted_border: ^3.1.0
+  qr_flutter: ^4.1.0
+  mobile_scanner: ^7.5.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/logo/
+
+  fonts:
+    - family: Outfit
+      fonts:
+        - asset: assets/fonts/Outfit.ttf
+    - family: Syne
+      fonts:
+        - asset: assets/fonts/Syne.ttf
