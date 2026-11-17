@@ -63,7 +63,7 @@ The browser extension works on its own. You can create blocks, add keywords and 
 
 When you install the app, the extension can use the blocks you've created there instead. This adds access to features like locks and schedules, and lets NoLook keep a history of what's been blocked.
 
-The extension is built for Chrome, Edge and Firefox. Get it on the [Chrome Web Store](https://chromewebstore.google.com/detail/nolook/okjfipdooljmahifocdghkgbelmpnkik) for Chrome and Edge, the Firefox version is coming soon. The NoLook app also includes setup instructions for Brave, Opera, Opera GX and Vivaldi.
+The extension is built for Chrome, Edge and Firefox. Get it on the [Chrome Web Store](https://chromewebstore.google.com/detail/nolook/okjfipdooljmahifocdghkgbelmpnkik) for Chrome and Edge, or on [Firefox Add-ons](https://addons.mozilla.org/firefox/addon/nolook/) for Firefox. The NoLook app also includes setup instructions for Brave, Opera, Opera GX and Vivaldi.
 
 ## Platforms
 
@@ -95,7 +95,7 @@ Get the latest version from [nolook.itszedk.com](https://nolook.itszedk.com) or 
 | macOS (beta) | `NoLook-macos.dmg` |
 | Linux (beta) | `NoLook-linux.AppImage` or `NoLook-linux.tar.gz` |
 | Chrome / Edge | [Chrome Web Store](https://chromewebstore.google.com/detail/nolook/okjfipdooljmahifocdghkgbelmpnkik) |
-| Firefox | Firefox Add-ons (coming soon) |
+| Firefox | [Firefox Add-ons](https://addons.mozilla.org/firefox/addon/nolook/) |
 
 The NoLook app includes instructions for installing and connecting the browser extension.
 
